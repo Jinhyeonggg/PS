@@ -5,14 +5,11 @@ using namespace std;
 class UnionFind {
 public:
 	vector<int> parent;
-	vector<int> numChild;
 
 	UnionFind(int size) {
 		parent.resize(size + 1);
-		numChild.resize(size + 1);
 		for (int i = 0; i <= size; i++) {
 			parent[i] = i;
-			numChild[i] = 1;
 		}
 	}
 
@@ -31,14 +28,6 @@ public:
 			return false;
 		}
 		else {
-			/* if (numChild[rootP] >= numChild[rootQ]) {
-				numChild[rootP] += numChild[rootQ];
-				parent[q] = rootP;
-			}
-			else {
-				numChild[rootQ] += numChild[rootP];
-				parent[p] = rootQ;
-			} */
 			parent[rootQ] = rootP;
 			return true;
 		}
