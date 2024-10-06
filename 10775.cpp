@@ -1,70 +1,39 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class UnionFind {
-public:
-    vector<int> parent;
+int p[100001];
 
-    UnionFind(int size) {
-        parent.resize(size + 1);
-        for (int i: parent) {
-            parent[i] = i;
-        }
-    }
+int find(int i) {
+    if (p[i] == i) return i;
+    return p[i] = find(p[i]);
+}
 
-    int find(int i) {
-        if (i == 1) {
-            if (parent[1] == 0) return 1;
-            else return -1;
-        }
-
-        if (parent[i] == 0) {
-            return i;
-        }
-        if (i != parent[i]) {
-            parent[i] = find(parent[i]);
-            return parent[i];
-        }
-        else return i;
-    }
-
-    bool help(int i) {
-        if (parent[i] == 0) {
-            parent[i] = i;
-            return true;
-        }
-        else {
-            int rootI = find(i);
-            if (rootI <= 1) return false;
-            else {
-                while (parent[rootI] != 0) rootI--;
-                if (rootI <= 1 && parent[1] == 1) return false;
-                int next = find(rootI);
-                parent[next] = next;
-                parent[rootI] = next;
-                parent[i] = next;
-                return true;
-            }
-        }
-    }
-};
+void uni(int a, int b) {
+    int pa = find(a);
+    int pb = find(b);
+    if (pa < pb) p[pb] = pa;
+    else p[pa] = pb;
+}
 
 int main() {
-    int G, P;
-    cin >> G >> P;
-    vector<int> gi(P);
-    
-    for (int i = 0; i < P; i++){
-        cin >> gi[i];
+	ios_base::sync_with_stdio(false);
+	cin.tie(NULL);
+
+    for (int i = 0; i < 100001; i++) {
+        p[i] = i;
     }
 
-    UnionFind uf(G);
-    int ans = 0;
-    for (int value: gi) {
-        if (uf.help(value)) {
+    int G, P;
+    cin >> G >> P;
+    int g, ans = 0;
+    for (int i = 0; i < P; i++) {
+        cin >> g;
+        int pg = find(g);
+        if (pg == 0) break;
+        else {
+            uni(pg, pg - 1);
             ans++;
         }
-        else break;
     }
     cout << ans;
     return 0;
