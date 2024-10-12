@@ -15,8 +15,9 @@ int main() {
         printf("error occurred in fork\n");
     }
     else if (rc1 == 0) {
-        dup2(1, fd[0]);
-        printf("hi, %d\n", (int)getpid());
+        printf("here %d\n", (int)getpid());
+        dup2(fd[1], 1);
+        printf("hifefefef, %d\n", (int)getpid());
     }
     else {
         int rc2 = fork();
@@ -24,9 +25,9 @@ int main() {
             printf("error occurred in fork\n");
         }
         else if (rc2 == 0) {
-            dup2(fd[1], 0);
-            char buf [100];
-            read(0, &buf, 100);
+            char buf [10000];
+            dup2(fd[0], 0);
+            read(STDIN_FILENO, &buf, 10000);
             printf("%s\n", buf);
             printf("%d\n", (int)getpid());
         }
